@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.annotation.IntDef;
 
 import com.example.coolweather.gson.Weather;
 import com.example.coolweather.util.HttpUtil;
@@ -49,7 +48,7 @@ public class AutoUpdateService extends Service {
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {
             //有缓存时直接解析天气数据
-            Weather weather = Utility.handleWeatherResponse(weatherString);
+            Weather weather = Utility.parseWeatherResponse(weatherString);
             String weatherId = weather.basic.weatherId;
 
             String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "key=844b69d8a1bc4a7e9277d79879b8d59a";
@@ -62,7 +61,7 @@ public class AutoUpdateService extends Service {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String responseText = response.body().string();
-                    Weather weather = Utility.handleWeatherResponse(responseText);
+                    Weather weather = Utility.parseWeatherResponse(responseText);
                     if (weather != null && "ok".equals(weather.status)) {
                         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
                         editor.putString("weather", responseText);

@@ -1,8 +1,8 @@
 package com.example.coolweather;
 
-import android.content.Intent;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +35,8 @@ import okhttp3.Response;
  */
 
 public class ChooseAreaFragment extends Fragment {
+
+    private static final String TAG = "ChooseAreaFragment";
 
     public static final int LEVEL_PROVINCE = 0;
 
@@ -149,7 +151,9 @@ public class ChooseAreaFragment extends Fragment {
             for (Province province : provinceList) {
                 dataList.add(province.getProvinceName());
             }
+            // 通过一个外部的方法控制如果适配器的内容改变时需要强制调用getView来刷新每个Item的内容。
             adapter.notifyDataSetChanged();
+            // 返回到列表最顶端
             listView.setSelection(0);
             currentLevel = LEVEL_PROVINCE;
         } else {
